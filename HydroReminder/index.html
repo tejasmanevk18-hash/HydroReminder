@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>HydroReminder</title>
+  <meta name="description" content="A simple, free water reminder.">
+  <meta name="theme-color" content="#0ea5e9">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <h1>💧 HydroReminder</h1>
+      <p id="todayLabel" class="muted"></p>
+    </header>
+
+    <!-- In-app reminder cards appear here -->
+    <section id="activeReminders" aria-live="assertive"></section>
+
+    <!-- Dashboard -->
+    <section class="card" aria-labelledby="dashTitle">
+      <h2 id="dashTitle" class="label">Today's Water</h2>
+      <p class="big"><span id="countText">0 / 8</span> <span class="unit">Glasses</span></p>
+      <div class="bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Water progress">
+        <div class="bar-fill" id="progressFill"></div>
+      </div>
+      <p id="mlText" class="muted small"></p>
+      <button id="drinkBtn" class="btn primary large" type="button">+ Drink Water</button>
+      <button id="undoBtn" class="btn ghost" type="button">Undo Last Glass</button>
+    </section>
+
+    <!-- Notification banner -->
+    <section id="notifBanner" class="card notice" hidden>
+      <p id="notifMsg" class="small"></p>
+      <button id="enableNotifBtn" class="btn secondary" type="button">Enable Notifications</button>
+    </section>
+
+    <!-- Reminders -->
+    <section class="card" aria-labelledby="remTitle">
+      <div class="row-between">
+        <h2 id="remTitle">My Reminders</h2>
+      </div>
+      <ul id="reminderList" class="list"></ul>
+      <button id="addBtn" class="btn secondary" type="button">+ Add Reminder</button>
+    </section>
+
+    <!-- Activity -->
+    <section class="card" aria-labelledby="actTitle">
+      <h2 id="actTitle">Today's Activity</h2>
+      <ul id="activityList" class="activity"></ul>
+    </section>
+
+    <!-- Settings -->
+    <section class="card" aria-labelledby="setTitle">
+      <h2 id="setTitle">Settings</h2>
+
+      <div class="field">
+        <label for="goalSelect">Daily Goal</label>
+        <select id="goalSelect"></select>
+      </div>
+
+      <div class="field">
+        <label for="sizeSelect">Glass Size</label>
+        <select id="sizeSelect"></select>
+      </div>
+
+      <div class="field">
+        <span id="notifLabel">Notifications</span>
+        <button id="notifSwitch" class="switch" type="button" role="switch" aria-checked="false" aria-labelledby="notifLabel"><span class="knob"></span></button>
+      </div>
+      <p id="notifStatus" class="muted small"></p>
+
+      <button id="resetBtn" class="btn danger" type="button">Reset Today's Progress</button>
+
+      <p class="muted tiny">Reminders are checked while HydroReminder is open or running in the background. Browsers and phones may delay or block them to save battery, so timing is not guaranteed.</p>
+    </section>
+  </main>
+
+  <!-- Add / Edit reminder modal -->
+  <div id="modal" class="modal" hidden>
+    <form id="reminderForm" class="sheet" novalidate role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h2 id="modalTitle">Add Reminder</h2>
+
+      <div class="field stack">
+        <label for="timeInput">Time</label>
+        <input id="timeInput" type="time" required>
+      </div>
+
+      <div class="field stack">
+        <label for="nameInput">Reminder Name <span class="muted">(optional)</span></label>
+        <input id="nameInput" type="text" maxlength="40" placeholder="Drink Water" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <span id="enableLabel">Enable Reminder</span>
+        <button id="enableSwitch" class="switch on" type="button" role="switch" aria-checked="true" aria-labelledby="enableLabel"><span class="knob"></span></button>
+      </div>
+
+      <p id="formError" class="error" role="alert" hidden></p>
+
+      <div class="actions">
+        <button class="btn primary" type="submit">Save Reminder</button>
+        <button id="cancelBtn" class="btn ghost" type="button">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
